@@ -133,11 +133,15 @@
       path = "${config.xdg.dataHome}/zsh/history";
     };
     initExtra = ''
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-      [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
       export BUILDKIT_PROGRESS=plain
+
+      # Lazy load nvm
+      nvm() {
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+        nvm $*
+      }
 
       cb() {
         if [ -d .git ]; then
