@@ -135,12 +135,35 @@
     initExtra = ''
       export BUILDKIT_PROGRESS=plain
 
-      # Lazy load nvm
-      nvm() {
+      load_nvm() {
+        # Do nothing if nvm has already been loaded
+
+        [ -n "$NVM_DIR" ] && return
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+        # Remove the custom functions created here
+        # no need to remove nvm as that is redefined by nvm.sh
+        unset -f node
+        unset -f npm
+      }
+
+      # Create lazy versions of node/npm/nvm commands
+      # that load nvm when first called 
+      nvm() {
+        load_nvm
         nvm $*
+      }
+
+      npm() {
+        load_nvm
+        npm $*
+      }
+      
+      node() {
+        load_nvm
+        node $*
       }
 
       cb() {
