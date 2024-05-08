@@ -49,12 +49,6 @@
 
   # Install AstroVim
   xdg.configFile."nvim".recursive = true;
-  # xdg.configFile."nvim".source = pkgs.fetchFromGitHub {
-  #   owner = "AstroNvim";
-  #   repo = "AstroNvim";
-  #   rev = "v3.42.0";
-  #   sha256 = "1apfd6253wspqwyprvv7ngv8w25b4a8p2wf19d8p0x4kg6pixz5p";
-  # };
   # xdg.configFile."nvim/lua/user".source = pkgs.fetchFromGitHub {
   #   owner = "pipex";
   #   repo = "astrovim";
@@ -140,6 +134,9 @@
         # Do nothing if nvm has already been loaded
         [ -n "$NVM_DIR" ] && return
 
+        [ ! -d "$HOME/.nvm" ] && {echo "NVM not installed"; return 1}
+
+        unset -f nvm
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -155,23 +152,20 @@
       # Create lazy versions of node/npm/nvm commands
       # that load nvm when first called 
       nvm() {
-        load_nvm
-        nvm $*
+        load_nvm && nvm $*
       }
 
       npm() {
-        load_nvm
-        npm $*
+        load_nvm && npm $*
       }
 
       node() {
-        load_nvm
-        node $*
+        load_nvm && node $*
       }
 
+      old_nvim=$(which nvim || echo "/bin/false")
       nvim() {
-        load_nvm
-        nvim $*
+        load_nvm && nvim $* || eval $old_nvim $*
       }
 
       cb() {
