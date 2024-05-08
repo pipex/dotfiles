@@ -44,6 +44,7 @@
     pkgs.deadnix
     pkgs.statix
     pkgs.luarocks
+    pkgs.python3
   ];
 
   # Install AstroVim
@@ -137,8 +138,8 @@
 
       load_nvm() {
         # Do nothing if nvm has already been loaded
-
         [ -n "$NVM_DIR" ] && return
+
         export NVM_DIR="$HOME/.nvm"
         [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
         [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -162,7 +163,7 @@
         load_nvm
         npm $*
       }
-      
+
       node() {
         load_nvm
         node $*
@@ -225,8 +226,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "chisui";
           repo = "zsh-nix-shell";
-          rev = "v0.5.0";
-          sha256 = "0za4aiwwrlawnia4f29msk822rj9bgcygw6a8a6iikiwzjjz0g91";
+          rev = "v0.8.0";
+          sha256 = "1lzrn0n4fxfcgg65v0qhnj7wnybybqzs4adz7xsrkgmcsr0ii8b7";
         };
       }
     ];
