@@ -145,6 +145,7 @@
         # no need to remove nvm as that is redefined by nvm.sh
         unset -f node
         unset -f npm
+        unset -f npx
         unset -f nvim
       }
 
@@ -153,6 +154,10 @@
       # that load nvm when first called 
       nvm() {
         load_nvm && nvm $*
+      }
+
+      npx() {
+        load_nvm && npx $*
       }
 
       npm() {
