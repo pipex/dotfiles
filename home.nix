@@ -129,24 +129,25 @@
     };
     initExtra = ''
       export BUILDKIT_PROGRESS=plain
+      export NVM_LOADED=false
 
       load_nvm() {
         # Do nothing if nvm has already been loaded
-        [ -n "$NVM_DIR" ] && return
+        [ -z "$NVM_LOADED" ] && return
 
         [ ! -d "$HOME/.nvm" ] && {echo "NVM not installed"; return 1}
 
-        unset -f nvm
-        export NVM_DIR="$HOME/.nvm"
-        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-        [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
         # Remove the custom functions created here
-        # no need to remove nvm as that is redefined by nvm.sh
         unset -f node
         unset -f npm
         unset -f npx
         unset -f nvim
+        unset -f nvm
+
+        export NVM_DIR="$HOME/.nvm"
+        [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+        [ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+        unset NVM_LOADED
       }
 
 
